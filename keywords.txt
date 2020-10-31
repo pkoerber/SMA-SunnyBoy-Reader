@@ -1,0 +1,14 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SMAReader	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setNumTries	KEYWORD2
+getValues	KEYWORD2
+getLog	KEYWORD2
+getAllValues KEYWORD2
