@@ -1,13 +1,13 @@
 # SMA-SunnyBoy-Reader
-Reading data from a SMA SunnyBoy solar inverter with an esp8266.
+Reading data from a SMA SunnyBoy solar inverter with an esp8266.  Port for an ESP32 does not work yet.
 
 ## Compatibility
 
-Tested with an SMA Sunny Boy 2.0 and a NodeMCU v3 ESP8266.
+Tested with an SMA Sunny Boy 2.0 and an ESP8266 NodeMCU v3.
 
 ## Example
 
-See the [demo](https://github.com/pkoerber/SMA-SunnyBoy-Reader/blob/main/examples/SMAReader_Demo/SMAReader_Demo.ino).
+See the [demo code](https://github.com/pkoerber/SMA-SunnyBoy-Reader/blob/main/examples/SMAReader_Demo/SMAReader_Demo.ino).
 
 ## Initialization
 
@@ -23,15 +23,23 @@ Constructs an SMAReader object, with
 
 `numTries` can be changed afterwards with `setNumTries`.
 
-## Functions
+## Functionality
+
+### getValues
 
 ```C++
 bool getValues(int numKeys, const String* keys, int* values);
 ```
-Get the values corresponding to the `keys`, the results are stored in the array `values` (must be of appropriate size).
+Get the values corresponding to the `keys`, the results are stored in the integer array `values` (must be of appropriate size).
 
-Returns `true` if successful, `false` otherwise
+Returns `true` if successful, `false` otherwise.
 
+There is also a version of getValues for `String` results (only relevant for a few keys, see the table below).
+```C++
+bool getValues(int numKeys, const String* keys, String* values);
+```
+
+### Keys
 
 The following keys are predefined:
 
@@ -62,18 +70,25 @@ The following keys are predefined:
 |KEY_WLAN_IP        |6180_104AB700|         | String                   |
 |KEY_WLAN_STRENGTH  |6100_004AB600| %       |                          |
 
+### getLog
 
 ```C++
 int getLog(uint32_t startTime, uint32_t endTime, uint32_t* values, uint32_t* timestamps=nullptr);
 ```
 
 Get historic values for the total energy production with a 5-minute interval beween `startTime` and `endTime`.
-These times are given as Unix timestamps (seconds after 01/01/1970, midnight UTC). This is compatible with the C++ function [mktime](http://www.cplusplus.com/reference/ctime/mktime/). See the [example code]([demo](https://github.com/pkoerber/SMA-SunnyBoy-Reader/blob/main/examples/SMAReader_Demo/SMAReader_Demo.ino).
+These times are given as Unix timestamps (seconds after 01/01/1970, midnight UTC). This is compatible with the C++ function [mktime](http://www.cplusplus.com/reference/ctime/mktime/). See the [example code](https://github.com/pkoerber/SMA-SunnyBoy-Reader/blob/main/examples/SMAReader_Demo/SMAReader_Demo.ino).
 
-The resulting values are stored in `values` (must be of appropriate size). If `timestamps` is not a nullptr, the corresponding timestamps are stored therein.
+The resulting values are stored in `values` (must be of appropriate size). If `timestamps` is not a null pointer, the corresponding timestamps are stored therein.
 Returns the number of values or -1 in case of failure.
 
+## Debugging
 
+Debugging can be turned on by setting `DEBUG_SMAREADER_ON`.  Uncomment the following line in `SMAReader.h`:
+```C++
+#define DEBUG_SMAREADER_ON 1
+```
 
+## References
 
-
+Details of the SunnyBoy API were obtained form these [Python](https://github.com/Dymerz/SMA-SunnyBoy) and [Javascript](https://github.com/martijndierckx/sunnyboy-influxdb) implementations.
