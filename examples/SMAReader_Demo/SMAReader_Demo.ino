@@ -1,5 +1,5 @@
 /**
- * Example: InverterWebsiteAPI.ino
+ * Example: SMAReader_Demo.ino
  *
  */
 
