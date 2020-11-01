@@ -1,9 +1,9 @@
 # SMA-SunnyBoy-Reader
-Reading data from a SMA SunnyBoy solar inverter with an esp8266.  Port for an ESP32 does not work yet.
+Reading data from a [SMA SunnyBoy solar inverter](https://www.sma.de/en/products/solarinverters.html) with an [ESP8266](https://en.wikipedia.org/wiki/ESP8266).  Port for an [ESP32](https://en.wikipedia.org/wiki/ESP32) does not work yet.
 
 ## Compatibility
 
-Tested with an SMA Sunny Boy 2.0 and an ESP8266 NodeMCU v3.
+Tested with an [SMA Sunny Boy 2.0](https://www.sma.de/en/products/solarinverters/sunny-boy-15-20-25.html) and an ESP8266 NodeMCU v3.
 
 ## Example
 
