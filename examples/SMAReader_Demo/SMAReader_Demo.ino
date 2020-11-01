@@ -106,7 +106,7 @@ void loop() {
       uint32_t values_log[100];
       uint32_t timestamps[100];
       int numValues=smaReader.getLog(startTimestamp, startTimestamp+1000, values_log, timestamps);
-      Serial.printf("Logger: %d\n", numValues==-1?"fail":"success");
+      Serial.printf("Logger: %s\n", numValues==-1?"fail":"success");
       for(int i=0;i<numValues;i++) {
         Serial.printf("Timestamp: %sTotal energy production: %lu Wh\n", asctime(localtime((time_t *)&timestamps[i])), values_log[i]);
       }
