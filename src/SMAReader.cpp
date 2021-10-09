@@ -6,7 +6,8 @@ bool SMAReader::postSMA(const char* postURL, const char* postMessage, DynamicJso
     DEBUG_SMAREADER("[HTTP] POST... message: %s\n", postMessage);
 
     http.useHTTP10(true);
-    http.begin(postURL);
+    WiFiClient client;
+    http.begin(client, postURL);
     http.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0");
     http.addHeader("Content-Type", "application/json");
     http.addHeader("Accept", "application/json, text/plain, */*");
