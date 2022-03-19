@@ -1,5 +1,8 @@
 #include "SMAReader.h"
 
+void SMAReader::setInverterIP(IPAddress inverterAddress) {
+	_inverterAddress = inverterAddress;
+}
 
 bool SMAReader::postSMA(const char* postURL, const char* postMessage, DynamicJsonDocument& jsonResult) {
     DEBUG_SMAREADER("[HTTP] POST... URL: %s\n", postURL);
@@ -45,7 +48,7 @@ bool SMAReader::authorize() {
     DynamicJsonDocument jsonResult(2*JSON_OBJECT_SIZE(1)+35);
     bool isSuccess=postSMA(authURL, postText, jsonResult);
     if(isSuccess) {
-        const char* res=jsonResult["result"]["sid"].as<char*>();
+        const char* res=jsonResult["result"]["sid"].as<const char*>();
         if(res==nullptr) {
            isSuccess=false;
            DEBUG_SMAREADER("Unexpected JSON format\n");
@@ -64,7 +67,7 @@ bool SMAReader::logout() {
       DEBUG_SMAREADER("failed, empty sid\n");
       return false;
     }
-    char logoutURL[60];
+    char logoutURL[128];
     sprintf(logoutURL, "http://%d.%d.%d.%d/dyn/logout.json?sid=%s", _inverterAddress[0], _inverterAddress[1], _inverterAddress[2], _inverterAddress[3], _sid.c_str());
     DynamicJsonDocument jsonResult(100);
     bool isSuccess=postSMA(logoutURL, "{}", jsonResult);
@@ -72,7 +75,7 @@ bool SMAReader::logout() {
 }
 
 bool SMAReader::getValuesAux(int numKeys, const String* keys, DynamicJsonDocument& doc, JsonVariant& result) {
-    char scriptURL[60];
+    char scriptURL[128];
     char postText[30+numKeys*17];
     char keyString[numKeys*17];
     strcpy(keyString, "\"");
@@ -137,8 +140,8 @@ bool SMAReader::getValues(int numKeys, const String* keys, String* values) {
     if(getValuesAux(numKeys, keys, doc, result)) {
        for(int i=0;i<numKeys;i++) {
           JsonVariant val=result[keys[i]]["1"][0]["val"];
-          if(val.is<char*>()) {
-              values[i]=val.as<char*>();
+          if(val.is<const char*>()) {
+              values[i]=val.as<const char*>();
               DEBUG_SMAREADER("String value: %d, key: %s, value: %s\n", i, keys[i].c_str(), values[i].c_str());
           } else if(val.is<int>()) {
               values[i]=val.as<int>();
@@ -154,7 +157,7 @@ bool SMAReader::getValues(int numKeys, const String* keys, String* values) {
 }
 
 int SMAReader::getLog(uint32_t startTime, uint32_t endTime, uint32_t* values, uint32_t* timestamps) {
-    char scriptURL[60];
+    char scriptURL[128];
     char postText[70];
     sprintf(postText, "{\"key\":28672, \"destDev\":[],\"tStart\":%lu,\"tEnd\":%lu}", startTime, endTime);
     int numValues=max((int)(endTime-startTime)/300+1,1);

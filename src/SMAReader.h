@@ -123,7 +123,7 @@ class SMAReader {
       */
      int getLog(uint32_t startTime, uint32_t endTime, uint32_t* values, uint32_t* timestamps=nullptr);
      bool getAllValues();
-     
+     void setInverterIP(IPAddress inverterAddress);
      
   private:
      IPAddress _inverterAddress;
